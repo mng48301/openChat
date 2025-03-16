@@ -24,3 +24,45 @@ Primarily Language: Java
 1. Download and execute the JAR file
 2. Follow the instructions to create an account and connect to the server. 
 3. Start chatting!
+
+
+
+## Contributing Guide
+
+### For Team Members (Direct Collaborators)
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/mng48301/openChat.git
+   cd openChat
+   ```
+
+2. **Create a Feature Branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+3. **Make Your Changes**
+   - Write your code
+   - Test your changes locally
+   - Commit your changes:
+     ```bash
+     git add .
+     git commit -m "feat: description of changes"
+     ```
+
+4. **Keep Your Branch Updated**
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout feature/your-feature-name
+   git merge main
+   ```
+
+5. **Push and Create Pull Request**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+   Then create a PR on GitHub for team review.
+
+
