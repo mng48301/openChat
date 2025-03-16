@@ -12,7 +12,7 @@ openChat is our project for CSI-2300, offering a chat application that allows us
 ### Why openChat?
 openChat provides a simple, easy-to-use chat application that allows users to communicate with each other in real time. It is a great way to stay connected with friends and family, and is perfect for decentralized communities, like university. openChat is also a great way to meet new people and make new friends.
 
-## Tech STACK 
+## Tech Stack
 Primarily Language: Java
     - JavaFX
     - Java Sockets
