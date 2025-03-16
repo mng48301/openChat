@@ -14,8 +14,8 @@ openChat provides a simple, easy-to-use chat application that allows users to co
 
 ## Tech Stack
 Primarily Language: Java
-    - JavaFX
-    - Java Sockets
+- JavaFX
+- Java Sockets
 
 ## Build Instructions
 1. Download and execute the JAR file
