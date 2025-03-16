@@ -1,2 +1,20 @@
 # openChat
 CSI-2300 Project
+
+## Team Members
+- [Max Glisky](
+- [---]
+- [---]
+
+## Project Description
+openChat is our project for CSI-2300, offering a chat application that allows users to communicate with each other in real time. Users can create accounts, log in, and send messages to other users. We will include features that allows users to create custom chat rooms and invite users to join them. Also, a mega group thread will be added to enable all online users to communicate with each other. 
+
+## Tech STACK 
+Primarily Language: Java
+    - JavaFX
+    - Java Sockets
+
+## Build Instructions
+1. Download and execute the JAR file
+2. Follow the instructions to create an account and connect to the server. 
+3. Start chatting!
