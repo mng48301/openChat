@@ -6,17 +6,13 @@
 
 
 # IDE specific files
-.vscode/
-.idea/
-*.iml
-.project
-.classpath
-.settings/
+/.vscode/workspaceStorage/
+/.project
+/.settings/
 
 # Build/Dependency folders
 bin/
-lib/
+
 
 # OS specific files
-.DS_Store
-Thumbs.db
+**/javafx-sdk-*/
