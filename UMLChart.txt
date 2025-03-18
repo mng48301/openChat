@@ -1,42 +1,41 @@
 classDiagram
-    Server <|-- User
-    Server <|-- UserA
-    Server <|-- UserB
-    Server <|-- Message
-    Server <|-- ChatRoom
+    
+    User <|--|> Message
+    Message <|--|> ChatRoom
+    ChatRoom <|--|> Server
+    Server <|--|> User
+
 
        class Server{
-      + int UserCount
+      + String Accounts [ ]
       + int UsersOnline
-      + String TimeStamp
+
+      + addNewUser()
+      + deleteUser()
+      
     }
     class User{
-      + String UserID // OU email
+      + String OU_email
       + String UserPassword
-      + String SentMessage
-      + String ReceivedMessage
-      + boolean IsPassTrue
-      + boolean IsIDTrue
+      + boolean ReceivedMessage
+
+      + SendMessage()
+      + Login()
+      + LogOff()
     }
- 
-    class UserA{
-      + boolean MsgRead
-      +
-      +
-    }
-    class UserB{
-        + boolean MsgRead
-        +
-        +
-    }
+
     class Message{
         + String TimeStamp
-        + String DlvrTime
         + String Contents
-        + String MsgFailed
+        + String destinationChatRoomID
+        + boolean MsgFailed
     }
     class ChatRoom{
         + String RoomName
-        + String WhiteList
+        + String RoomID
+        + String WhiteList [ ]
         + boolean IsPrivate
+
+        + addNewMember()
+        + removeMember()
     }
