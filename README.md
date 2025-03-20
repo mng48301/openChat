@@ -43,7 +43,7 @@ Primarily Language: Java
 
 2. **Create a Feature Branch**
    ```bash
-   git checkout -b new-branch-name
+   git checkout -b new-branch
    ```
 
 3. **Make Your Changes**
@@ -59,12 +59,13 @@ Primarily Language: Java
    ```bash
    git checkout main
    git pull origin main
-   git merge new-branch-name
+   git checkout new-branch
+   git merge main
    ```
 
 5. **Push and Create Pull Request**
    ```bash
-   git push origin new-branch-name
+   git push origin new-branch
    ```
    Then create a PR on GitHub for team review.
 
