@@ -9,7 +9,7 @@
             "name": "Launch Client Program",
             "request": "launch",
             "mainClass": "client.Client",
-            "vmArgs": "--module-path c:\\Users\\mng48\\source\\repos\\tools\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.base"
+            "vmArgs": "--module-path c:\\Users\\Keegan\\Desktop\\Programming\\Java\\openjfx-24_windows-x64_bin-sdk\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.base"
         }, // set vmArgs to your javafx-sdk-24 lib path
 
         {
@@ -17,7 +17,7 @@
             "name": "Launch Server Program",
             "request": "launch",
             "mainClass": "server.Server",
-            "vmArgs": "--module-path c:\\Users\\mng48\\source\\repos\\tools\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web"
+            "vmArgs": "--module-path c:\\Users\\Keegan\\Desktop\\Programming\\Java\\openjfx-24_windows-x64_bin-sdk\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web"
         }, // set vmArgs to your javafx-sdk-24 lib path
 
         {
