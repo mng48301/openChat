@@ -1,6 +1,5 @@
 package client;
 import java.util.Stack;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,25 +19,68 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
+import server.Server;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.application.Platform;
 
+import java.io.*;
+import java.net.*;
 
 // Client class
 
 public class Client extends Application {
 
-    private ObservableList Messages;
-    private ListView MessageListView;
+    private ObservableList<String> Messages;
+    private ListView<String> MessageListView;
     private TextArea MessageTextArea;
+
+    // I/O stream config for sending and receiving messages
+    private PrintWriter out;
+    private BufferedReader in;
+    private BufferedReader userInput;
+    private String serverAddress = "localhost";
+    private int serverPort = 12345;
+    private Socket socket;
 
     public static void main(String[] args) {
         launch(args);
+
+    
+
     }
 
     @Override
     public void start(Stage primaryStage) {
+        try{
+            socket = new Socket(serverAddress, serverPort);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            userInput = new BufferedReader(new InputStreamReader(System.in));
+            
+            System.out.println("Connected to server on " + serverAddress + ":" + serverPort);
+            
+            // setting reception of messages onto a thread for concurrent listening
+
+            Thread listener = new Thread(() -> {
+                try {
+                    String serverMessage;
+                    while ((serverMessage = in.readLine()) != null) {
+                        final String message = serverMessage;
+                        Platform.runLater(() -> {
+                            Messages.add(message);
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            listener.start();
+        } catch (IOException e) {
+            System.out.println("ERROR: Unable to connect to server");
+            e.printStackTrace();
+        }
+
         //Text on top of the window
         primaryStage.setTitle("OpenChat: Chat Away!");
 
@@ -52,8 +94,9 @@ public class Client extends Application {
         sendButton.setOnAction(event -> {
             String message = MessageTextArea.getText();
             if (!message.isEmpty()) {
-                Messages.add("Me: " + message);
+                Messages.add("Me: " + message); 
                 MessageTextArea.clear();
+                out.println(message);
             }
         });
 
@@ -71,5 +114,19 @@ public class Client extends Application {
         Scene scene = new Scene(root, 550, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                out.close();
+                in.close();
+                userInput.close();
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
