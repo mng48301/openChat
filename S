@@ -1,0 +1,49 @@
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserCredentials {
+    private static final String CREDENTIALS_FILE = "user_credentials.txt";
+    private static Map<String, String> credentials = new HashMap<>();
+
+    static {
+        loadCredentials();
+    }
+
+    private static void loadCredentials() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CREDENTIALS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length == 2) {
+                    credentials.put(parts[0], parts[1]);
+                }
+            }
+        } catch (IOException e) {
+            // File doesn't exist yet - that's okay
+        }
+    }
+
+    public static synchronized boolean registerUser(String username, String password) {
+        if (credentials.containsKey(username)) {
+            return false; // Username already exists
+        }
+        credentials.put(username, password);
+        saveCredentials();
+        return true;
+    }
+
+    public static synchronized boolean authenticate(String username, String password) {
+        return credentials.containsKey(username) && credentials.get(username).equals(password);
+    }
+
+    private static void saveCredentials() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(CREDENTIALS_FILE))) {
+            for (Map.Entry<String, String> entry : credentials.entrySet()) {
+                writer.println(entry.getKey() + ":" + entry.getValue());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
