@@ -1,0 +1,60 @@
+public static class ClientHandler implements Runnable {
+    // ... existing fields ...
+    private boolean authenticated = false;
+
+    @Override
+    public void run() {
+        try {
+            // Authentication loop
+            while (!authenticated) {
+                out.println("Enter username (or 'register' to create new account):");
+                String input = in.readLine();
+                
+                if ("register".equalsIgnoreCase(input)) {
+                    handleRegistration();
+                } else {
+                    handleLogin(input);
+                }
+            }
+
+            // Rest of your existing chat logic...
+            out.println("Connected to server. Start chatting!");
+            
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println(username + ": " + inputLine);
+                broadcast("[" + username + "]: " + inputLine, this);
+            }
+            
+            // ... rest of your existing cleanup code ...
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleRegistration() throws IOException {
+        out.println("Enter new username:");
+        String newUsername = in.readLine();
+        out.println("Enter password:");
+        String password = in.readLine();
+        
+        if (UserCredentials.registerUser(newUsername, password)) {
+            out.println("Registration successful! You can now login.");
+        } else {
+            out.println("Username already exists. Please try again.");
+        }
+    }
+
+    private void handleLogin(String attemptedUsername) throws IOException {
+        out.println("Enter password:");
+        String password = in.readLine();
+        
+        if (UserCredentials.authenticate(attemptedUsername, password)) {
+            this.username = attemptedUsername;
+            this.authenticated = true;
+            out.println("Login successful!");
+            System.out.println("User " + username + " has connected");
+        } else {
+            out.println("Invalid username or password. Please try again.");
+        }
+    }
