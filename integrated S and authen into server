@@ -11,41 +11,7 @@ public class Server {
     private static final int PORT = 12345;
     private static CopyOnWriteArrayList<ClientHandler> clients = new CopyOnWriteArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Server started on port " + PORT);
-
-            
-            new Thread(() -> {
-                Scanner scanner = new Scanner(System.in);
-                while (true) {
-                    if (scanner.hasNextLine()) {
-                        String message = scanner.nextLine();
-                        broadcast("Server: " + message, null);
-                    }
-                }
-            }).start();
-
-            
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("New connection from: " + clientSocket.getInetAddress());
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                clients.add(clientHandler);
-                new Thread(clientHandler).start();
-            }
-        }
-    }
-
-    public static void broadcast(String message, ClientHandler sender) {
-        for (ClientHandler client : clients) {
-            if (client != sender && client.isAuthenticated()) {
-                client.sendMessage(message);
-            }
-        }
-    }
-
-    
+   
     private static class UserCredentials {
         private static final String CREDENTIALS_FILE = "user_credentials.txt";
         private static Map<String, String> credentials = new HashMap<>();
@@ -64,7 +30,7 @@ public class Server {
                     }
                 }
             } catch (IOException e) {
-                // File will be created on first registration
+                
             }
         }
 
@@ -93,7 +59,40 @@ public class Server {
         }
     }
 
-    
+    public static void main(String[] args) throws IOException {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Server started on port " + PORT);
+
+           
+            new Thread(() -> {
+                Scanner scanner = new Scanner(System.in);
+                while (true) {
+                    if (scanner.hasNextLine()) {
+                        String message = scanner.nextLine();
+                        broadcast("Server: " + message, null);
+                    }
+                }
+            }).start();
+
+         
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("New connection from: " + clientSocket.getInetAddress());
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                clients.add(clientHandler);
+                new Thread(clientHandler).start();
+            }
+        }
+    }
+
+    public static void broadcast(String message, ClientHandler sender) {
+        for (ClientHandler client : clients) {
+            if (client != sender && client.isAuthenticated()) {
+                client.sendMessage(message);
+            }
+        }
+    }
+
     public static class ClientHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
@@ -118,7 +117,7 @@ public class Server {
         @Override
         public void run() {
             try {
-               
+                // Authentication phase
                 out.println("Welcome! Choose an option:\n1. Register\n2. Login");
                 String choice = in.readLine();
 
@@ -131,7 +130,7 @@ public class Server {
                     return;
                 }
 
-               
+                // Only proceed to chat if authenticated
                 if (authenticated) {
                     out.println("Authentication successful! Welcome, " + username + "!");
                     System.out.println("User " + username + " has connected");
