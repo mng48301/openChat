@@ -15,7 +15,7 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started on port " + PORT);
 
-            // Thread for server console input
+            
             new Thread(() -> {
                 Scanner scanner = new Scanner(System.in);
                 while (true) {
@@ -26,7 +26,7 @@ public class Server {
                 }
             }).start();
 
-            // Main connection acceptance loop
+            
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New connection from: " + clientSocket.getInetAddress());
@@ -45,7 +45,7 @@ public class Server {
         }
     }
 
-    // Inner class for handling user credentials
+    
     private static class UserCredentials {
         private static final String CREDENTIALS_FILE = "user_credentials.txt";
         private static Map<String, String> credentials = new HashMap<>();
@@ -93,7 +93,7 @@ public class Server {
         }
     }
 
-    // Modified ClientHandler class with authentication
+    
     public static class ClientHandler implements Runnable {
         private Socket clientSocket;
         private PrintWriter out;
@@ -118,7 +118,7 @@ public class Server {
         @Override
         public void run() {
             try {
-                // Authentication phase
+               
                 out.println("Welcome! Choose an option:\n1. Register\n2. Login");
                 String choice = in.readLine();
 
@@ -131,7 +131,7 @@ public class Server {
                     return;
                 }
 
-                // Only proceed to chat if authenticated
+               
                 if (authenticated) {
                     out.println("Authentication successful! Welcome, " + username + "!");
                     System.out.println("User " + username + " has connected");
