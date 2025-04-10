@@ -42,44 +42,58 @@ public class Client extends Application {
     private String serverAddress = "localhost";
     private int serverPort = 12345;
     private Socket socket;
+    public String username;
+
+
+    public Client(){
+        // default constructor
+    }
+
+    public Client(Socket socket, PrintWriter out, BufferedReader in, String username){
+        this.socket = socket;
+        this.out = out;
+        this.in = in;
+        this.username = username;
+    }
 
     public static void main(String[] args) {
         launch(args);
-
-    
-
     }
 
     @Override
     public void start(Stage primaryStage) {
-        try{
-            socket = new Socket(serverAddress, serverPort);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            userInput = new BufferedReader(new InputStreamReader(System.in));
-            
-            System.out.println("Connected to server on " + serverAddress + ":" + serverPort);
-            
-            // setting reception of messages onto a thread for concurrent listening
+        if (socket == null) {
+            try{
+                socket = new Socket(serverAddress, serverPort);
+                out = new PrintWriter(socket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                userInput = new BufferedReader(new InputStreamReader(System.in));
+                
+                System.out.println("Connected to server on " + serverAddress + ":" + serverPort);
+                
+                // setting reception of messages onto a thread for concurrent listening
 
-            Thread listener = new Thread(() -> {
-                try {
-                    String serverMessage;
-                    while ((serverMessage = in.readLine()) != null) {
-                        final String message = serverMessage;
-                        Platform.runLater(() -> {
-                            Messages.add(message);
-                        });
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            listener.start();
-        } catch (IOException e) {
-            System.out.println("ERROR: Unable to connect to server");
-            e.printStackTrace();
+                
+            } catch (IOException e) {
+                System.out.println("ERROR: Unable to connect to server");
+                e.printStackTrace();
+            }
         }
+        
+        Thread listener = new Thread(() -> {
+            try {
+                String serverMessage;
+                while ((serverMessage = in.readLine()) != null) {
+                    final String message = serverMessage;
+                    Platform.runLater(() -> {
+                        Messages.add(message);
+                    });
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        listener.start();
 
         //Text on top of the window
         primaryStage.setTitle("OpenChat: Chat Away!");

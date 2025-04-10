@@ -5,11 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "Login",
+            "type": "java", // main entry point!
+            "name": "Launch Login Program",
             "request": "launch",
             "mainClass": "client.Login",
-            "projectName": "openChat_24936169",
             "vmArgs": "--module-path C:\\Users\\mng48\\source\\repos\\tools\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.base"
         },
         {
