@@ -5,21 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java", // main entry point!
+            "name": "Launch Login Program",
+            "request": "launch",
+            "mainClass": "client.Login",
+            "vmArgs": "--module-path C:\\Users\\mng48\\source\\repos\\tools\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.base"
+        },
+        {
             "type": "java",
             "name": "Launch Client Program",
             "request": "launch",
             "mainClass": "client.Client",
             "vmArgs": "--module-path C:\\Users\\mng48\\source\\repos\\tools\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.base"
-        }, // set vmArgs to your javafx-sdk-24 lib path
-
+        },
         {
             "type": "java",
             "name": "Launch Server Program",
             "request": "launch",
             "mainClass": "server.Server",
             "vmArgs": "--module-path C:\\Users\\mng48\\source\\repos\\tools\\javafx-sdk-24\\lib --add-modules javafx.controls,javafx.fxml,javafx.web"
-        }, // set vmArgs to your javafx-sdk-24 lib path
-
+        },
         {
             "type": "java",
             "name": "Current File",

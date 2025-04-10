@@ -16,6 +16,7 @@ public class Server {
         private static final String CREDENTIALS_FILE = "user_credentials.txt";
         private static Map<String, String> credentials = new HashMap<>();
 
+
         static {
             loadCredentials();
         }
@@ -118,28 +119,60 @@ public class Server {
         public void run() {
             try {
                 // Authentication phase
-                out.println("Welcome! Choose an option:\n1. Register\n2. Login");
-                String choice = in.readLine();
+                out.println("listening for incoming messages...");
+                String request = in.readLine(); 
+                
+                if (request.startsWith("LOGIN REQUEST")) {
+                    try {
+                        String credentials = request.substring("LOGIN REQUEST ".length());
+                        String[] parts = credentials.split(":");
+                        if (parts.length != 2) {
+                            out.println("Invalid request format. Please try again.");
+                            return;
+                        }
+                        else{
+                            String username = parts[0].trim();
+                            String password = parts[1].trim();
 
-                if ("1".equals(choice)) {
-                    handleRegistration();
-                } else if ("2".equals(choice)) {
-                    handleLogin();
-                } else {
-                    out.println("Invalid choice. Disconnecting.");
-                    return;
-                }
+                            // authentication check
 
-                // Only proceed to chat if authenticated
-                if (authenticated) {
-                    out.println("Authentication successful! Welcome, " + username + "!");
-                    System.out.println("User " + username + " has connected");
-
-                    // Chat loop
-                    String inputLine;
-                    while ((inputLine = in.readLine()) != null) {
-                        System.out.println(username + ": " + inputLine);
-                        broadcast("[" + username + "]: " + inputLine, this);
+                            if (UserCredentials.authenticate(username, password)) {
+                                this.username = username;
+                                this.authenticated = true;
+                                out.println("LOGIN SUCCESSFUL!");
+        
+                                broadcast(username + " has joined the chat.", this); // Notify others
+                                String inputLine;
+                                while ((inputLine = in.readLine()) != null) {
+                                    System.out.println(username + ": " + inputLine);
+                                    broadcast("[" + username + "]: " + inputLine, this);
+                                }
+        
+                            } else {
+                                out.println("LOGIN FAILED!");
+                                handleRegistration(); // Prompt for registration if login fails
+                            }
+                        }
+                    } finally {
+                        cleanup();
+                    }
+                } else if (request.startsWith("REGISTER REQUEST")) {
+                    String credentials = request.substring("REGISTER REQUEST ".length());
+                    String[] parts = credentials.split(":");
+                    if (parts.length != 2) {
+                        out.println("Invalid request format. Please try again.");
+                        return;
+                    }
+                    
+                    String username = parts[0].trim();
+                    String password = parts[1].trim();
+                    
+                    if (UserCredentials.registerUser(username, password)) {
+                        this.username = username;
+                        this.authenticated = true;
+                        out.println("REGISTRATION SUCCESSFUL!");
+                    } else {
+                        out.println("REGISTRATION FAILED!");
                     }
                 }
             } catch (IOException e) {
