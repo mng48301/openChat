@@ -28,9 +28,9 @@ Primarily Language: Java
 ![image](https://github.com/user-attachments/assets/3e242873-a8d5-4424-96d9-150cb373a6de)
 
 ## Build Instructions
-1. Download and execute the JAR file
-2. Follow the instructions to create an account and connect to the server. 
-3. Start chatting!
+1. Download and run the Server.java file
+2. Run the Login.java file and proceed with creating or logging into your account.
+3. Start Chatting!
 
 
 
