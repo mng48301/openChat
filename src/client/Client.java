@@ -1,27 +1,16 @@
 package client;
-import java.util.Stack;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import server.Server;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.application.Platform;
 
 import java.io.*;
@@ -95,16 +84,26 @@ public class Client extends Application {
         });
         listener.start();
 
-        //Text on top of the window
-        primaryStage.setTitle("OpenChat: Chat Away!");
+        // Text 
+        primaryStage.setTitle("OpenChat: " + username);
 
-        //Message history
+        
         Messages = FXCollections.observableArrayList();
         MessageListView = new ListView<>(Messages);
+        MessageListView.setStyle("-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc;");
+        
+        // username header
+        Label headerLabel = new Label("Welcome, " + username);
+        headerLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 5;");
+        
         MessageTextArea = new TextArea();
+        MessageTextArea.setPromptText("Type your message here...");
+        MessageTextArea.setPrefRowCount(3);
+        
         Button sendButton = new Button("Send");
-
-        //What happens when the send button is clicked
+        sendButton.setStyle("-fx-background-color:rgb(212, 224, 212); -fx-text-fill: black;");
+        
+        // What happens when the send button is clicked
         sendButton.setOnAction(event -> {
             String message = MessageTextArea.getText();
             if (!message.isEmpty()) {
@@ -114,18 +113,20 @@ public class Client extends Application {
             }
         });
 
+        // initialization config
 
-        //Box for the input text (horizontal)
         HBox inputBox = new HBox(10);
         inputBox.getChildren().addAll(MessageTextArea, sendButton);
+        inputBox.setPadding(new Insets(5));
 
-        //Box for the input text (vertical)
+        
         VBox root = new VBox(10);
-        root.getChildren().addAll(MessageListView, inputBox);
-        root.setStyle("-fx-background-color:rgb(38, 0, 255);");
+        root.setPadding(new Insets(10));
+        root.getChildren().addAll(headerLabel, MessageListView, inputBox);
+        root.setStyle("-fx-background-color:rgba(67, 164, 255, 0.99);");
 
-        //The box/window for the application
-        Scene scene = new Scene(root, 550, 350);
+        // The box/window for the application
+        Scene scene = new Scene(root, 575, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
