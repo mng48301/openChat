@@ -9,6 +9,9 @@ CSI-2300 Project
 ## Project Description
 openChat is our project for CSI-2300, offering a chat application that allows users to communicate with each other in real time. Users can create accounts, log in, and send messages to other users. We will include features that allows users to create custom chat rooms and invite users to join them. Also, a mega group thread will be added to enable all online users to communicate with each other. 
 
+![afterOpenChat](https://github.com/user-attachments/assets/cc4a84a1-402c-4c28-b484-2f0374197330)
+
+
 ### Why openChat?
 openChat provides a simple, easy-to-use chat application that allows users to communicate with each other in real time. It is a great way to stay connected with friends and family, and is perfect for decentralized communities, like university. openChat is also a great way to meet new people and make new friends.
 
